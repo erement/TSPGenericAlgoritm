@@ -5,11 +5,11 @@ public class namecity
 {
 	public static int pop= Main.populationN;
 	protected static int[] 
-	mb[]=new int[pop/2][pop];// Ð¼Ð°ÑÑÐ¸Ð² Ð¼ÐµÑÑ‚Ð¾Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ð¹ Ð³Ð¾Ñ€Ð¾Ð´Ð¾Ð²
+	mb[]=new int[pop/2][pop];// ìàññèâ ìåñòîïîëîæåíèé ãîðîäîâ
 	private static int[]
-	ma[]=new int[pop][pop],//Ð¼Ð°ÑÑÐ¸Ð² Ñ€Ð°ÑÑÑ‚Ð¾ÑÐ½Ð¸Ð¹ Ð¼ÐµÐ¶Ð´Ñƒ Ð³Ð¾Ñ€Ð¾Ð´Ð°Ð¼Ð¸
+	ma[]=new int[pop][pop],//ìàññèâ ðàññòîÿíèé ìåæäó ãîðîäàìè
 
-	k=new int[2*pop];//Ð¼Ð°ÑÑÐ¸Ð² ÐºÐ°Ñ‡ÐµÑÑ‚Ð²Ð° Ð¿Ð¾Ð¿ÑƒÐ»ÑÑ†Ð¸Ð¹
+	k=new int[2*pop];//ìàññèâ êà÷åñòâà ïîïóëÿöèé
 	
 	public static int getcity(int x,int y){
 		if (((x>pop/2) | (y>pop)) | ((x<0) | (y<0))) {System.out.println("Out of range city");
@@ -45,4 +45,4 @@ public class namecity
 			else
 			k[x]=y;
 	}
-} 
+} 	

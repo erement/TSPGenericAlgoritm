@@ -14,12 +14,12 @@ public class Main
 	protected static namecity mop= new namecity();
 	
 	private static int[]
-	mc[]= new int[2*populationN][populationN],//РѕСЃРЅРѕРІРЅРѕР№ РјР°СЃСЃРёРІ РїРѕРїСѓР»СЏС†РёР№
-	mg[]=new int[2*populationN][populationN],//РјР°СЃСЃРёРІ РІСЂРµРјРµРЅРЅРѕРіРѕ С…СЂР°РЅРµРЅРёСЏ РїРѕРїСѓР»СЏС†РёР№
+	mc[]= new int[2*populationN][populationN],//основной массив популяций
+	mg[]=new int[2*populationN][populationN],//массив временного хранения популяций
 	
-	ideal=new int[populationN];//РјР°СЃСЃРёРІ СЃ Р»СѓС‡С€РµР№ РѕСЃРѕР±СЊСЋ(РјР°СЂС€СЂСѓС‚РѕРј)
+	ideal=new int[populationN];//массив с лучшей особью(маршрутом)
 	private static void parseWay(){
-		//РїСЂРµРІСЂР°С‰РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ РіРѕСЂРѕРґРѕРІ РІ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ РЅРёРјРё.
+		//превращение координат городов в расстояние между ними.
 		int h,g,z,z1=-1,z2=0;
 		for(int i=0; i<populationN/2; i++)
 			for(int j=0; j<populationN; j++)
@@ -30,11 +30,12 @@ public class Main
 					    if (mop.getcity(h,g)>0){
 						  z=Math.abs(i-h)+Math.abs(j-g);
 						  mop.setway(z1,z2,z);
+						  if(z2<populationN-1) 
 						  z2++;
 					}}}
 				
 	private static void orderLiness(){
-		//РІС‹СЃС‚Р°РІР»РµРЅРёРµ РїРѕСЂСЏРґРєР° СЃР»РµРґРѕРІР°РЅРёСЏ РїРѕ РіРѕСЂРѕРґР°Рј
+		//выставление порядка следования по городам
 		int x=1;
 		for(int i=0;i<populationN/2; i++)
 		    for(int j=0;j<populationN; j++)
@@ -43,8 +44,8 @@ public class Main
 		}}
 	
 	private static int[][] initGert(){
-		//Р·РґРµСЃСЊ Р¶РµСЃС‚СЊ #1. Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РЅР°С‡Р°Р»СЊРЅРѕР№ 
-		//РїРѕРїСѓР»СЏС†РёРё РјР°СЂС€СЂСѓС‚РѕРІ
+		//здесь жесть #1. Формирование начальной 
+		//популяции маршрутов
 		int w=0,r=0,h=0,
 		x[]= new int[populationN],
 		b[][]=new int[2*populationN][populationN];
@@ -77,7 +78,7 @@ public class Main
 	}
 	
 	private static int obzor(int[][] c,int f,int[] ff){
-		//Р¶РµСЃС‚СЊ #2. РІС‹С‡РёСЃР»РµРЅРёРµ РґР°Р»СЊРЅРѕСЃС‚Рё РјР°СЂС€СЂСѓС‚РѕРІ
+		//жесть #2. вычисление дальности маршрутов
 		int h=0;
 		for(int i=0; i<populationN; i++)
 			for(int j=0; j<populationN-1; j++) {h+=mop.getway(c[i][j]-1,c[i][j+1]-1);
@@ -96,7 +97,7 @@ public class Main
 			}
 
 	private static int[][] sel(int[][] a,int[][] b,int g){
-		//СЃРєСЂРµС‰РёРІР°РЅРёРµ РґРІСѓС… СЂРѕРґРёС‚РµР»РµР№ Рё РїРѕР»СѓС‡РµРЅРёРµ РґРІСѓС… РїРѕС‚РѕРјРєРѕРІ 
+		//скрещивание двух родителей и получение двух потомков 
 		int ol,lo;
 		ol=(int)(Math.random()*2*populationN);
 		lo=(int)(Math.random()*2*populationN);
@@ -113,8 +114,8 @@ public class Main
 	}
 
 	private static void mutation(int[] a){
-		//РјСѓС‚Р°С†РёСЏ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ РјР°СЂС€СЂСѓС‚Р° РїСѓС‚РµРј РїРµСЂРµСЃС‚Р°РІР»РµРЅРёСЏ
-		//РґРІСѓС… СЃР»СѓС‡Р°Р№РЅС‹С… РіРѕСЂРѕРґРѕРІ РІ РЅРµРј
+		//мутация случайного маршрута путем переставления
+		//двух случайных городов в нем
 		int l,k=(int)(Math.random()*populationN-2)+1,
 		w=(int)(Math.random()*populationN);
 		if ((k<1)&(k>populationN-4)) {}else
@@ -134,10 +135,10 @@ public class Main
 		}
 
 	public static void main(String[] args)
-	{//РѕСЃРЅРѕРІР°.РЎС‡РёС‚С‹РІР°РЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° РїСЂРѕС…РѕРґРѕРІ РїРѕ Р°Р»РіРѕСЂРёС‚РјСѓ,
-	//СЃС‡РёС‚С‹РІР°РЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚,РІС‹Р·РѕРІС‹ С„СѓРЅРєС†РёР№, Рё С‚.Рґ.
+	{//основа.Считывание количества проходов по алгоритму,
+	//считывание координат,вызовы функций, и т.д.
 		int M,r=0,x=0,y=0;
-		//СЃС‡РёС‚С‹РІР°РЅРёРµ РїСЂРѕС…РѕРґРѕРІ
+		//считывание проходов
 		M=in.nextInt();
 		
 		for ( x=0;x<populationN;x++)
@@ -145,12 +146,12 @@ public class Main
 				mop.setcity(x,y,1);
 			r++;
 			}r=0;
-		//РјРЅРѕРіРѕ,РњРќРћР“Рћ РІС‹Р·РѕРІРѕРІ С„СѓРЅРєС†РёР№
+		//много,МНОГО вызовов функций
 		parseWay();
 		orderLiness();
 		out.println();
 		mc=initGert();
-		//РїРµС‡Р°С‚СЊ РёС‚РѕРіРѕРІРѕРіРѕ РјР°СЃСЃРёРІР° РіРѕСЂРѕРґРѕРІ
+		//печать итогового массива городов
 		for(int i=0; i<populationN/2; i++){out.println();
 			for(int j=0; j<populationN; j++)
 				out.print(mop.getcity(i,j)+" ");}
@@ -158,12 +159,12 @@ public class Main
 		w=obzor(mc,w,ideal);
 		r=-1;y=w;
 		out.println(w);
-		//Р·Р°С‡РёСЃС‚РєР° РјР°СЃСЃРёРІР° РєР°С‡РµСЃС‚РІ РјР°СЂС€СЂСѓС‚РѕРІ
+		//зачистка массива качеств маршрутов
 		for(int j=0; j<2*populationN; j++) mop.setsort(j,0);
-		//РЅР°С‡Р°Р»Рѕ РѕСЃРЅРѕРІРЅРѕРіРѕ Р°Р»РіРѕСЂРёС‚РјР°
+		//начало основного алгоритма
 		for(int l=0; l<M; l++) 
 		{
-			//Р·Р°РїСѓСЃРє СЃРµР»РµРєС†РёРё РјР°СЂС€СЂСѓС‚РѕРІ
+			//запуск селекции маршрутов
 			for(s=0; s<populationN; s++) 
 			{
 				r=s*2;
@@ -171,7 +172,7 @@ public class Main
 				mg=sel(mc,mg,r);
 			}
 			mc=mg;
-			//Р·Р°РїСѓСЃРє РјСѓС‚Р°С†РёРё РјР°СЂС€СЂСѓС‚РѕРІ
+			//запуск мутации маршрутов
 			for(int i=0;i<populationN/4;i++){
 			s=(int)(Math.random()*2*populationN);
 			mutation(mc[s]);}
